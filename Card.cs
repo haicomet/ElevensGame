@@ -1,54 +1,55 @@
 using System;
-using System.Collections.Generic;
 
-
+public enum Suit
+{
+    Clubs,
+    Diamonds,
+    Hearts,
+    Spades
+}
 
 public class Card
 {
-    private string rank;
-    private string suit;
-    private int value;
+    public int Rank { get; private set; }
+    public Suit Suit { get; private set; }
+    public int FaceValue { get; private set; }
 
-    // properties for deck building
-    public static string[] Suits = { "Clubs", "Diamonds", "Hearts", "Spades" };
-    public static string[] Ranks = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
-
-    
-    /// initializes a new card
-    
-    public Card(string rank, string suit, int value)
+    public Card(int r, Suit s)
     {
-        this.rank = rank;
-        this.suit = suit;
-        this.value = value;
+        Rank = r;
+        Suit = s;
+
+        if (Rank == 11 || Rank == 12 || Rank == 13)
+        {
+            FaceValue = 0;
+        }
+        else
+        {
+            FaceValue = Rank;
+        }
     }
 
-    
-    /// returns the rank of the card
-    
-    public string getRank()
-    {
-        return rank;
-    }
-
-    
-    /// returns the suit of the card
-    
-    public string getSuit()
-    {
-        return suit;
-    }
-
-    
-    /// returns the numerical value of the card
-    public int getValue()
-    {
-        return value;
-    }
-
-    /// returns a string representation of the card
     public override string ToString()
     {
-        return $"{rank} of {suit}";
+        string rankStr;
+        switch (Rank)
+        {
+            case 1:
+                rankStr = "Ace";
+                break;
+            case 11:
+                rankStr = "Jack";
+                break;
+            case 12:
+                rankStr = "Queen";
+                break;
+            case 13:
+                rankStr = "King";
+                break;
+            default:
+                rankStr = Rank.ToString();
+                break;
+        }
+        return $"{rankStr} of {Suit}";
     }
 }
