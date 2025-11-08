@@ -1,27 +1,17 @@
 ﻿using System;
 using System.Linq;
 
-/// <summary>
-/// This class runs the command-line "Elevens" game loop.
-/// It acts as the "Controller" and "View",
-/// while the Board class is the "Model".
-/// </summary>
 class Program
 {
-    // The game board (our "Model")
     private static Board board;
 
-    // A message to display to the user (for errors or success)
     private static string message = "";
 
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
     static void Main(string[] args)
     {
         board = new Board();
 
-        // The main game loop
+        
         while (true)
         {
             // 1. Fill any empty spots from the stock
@@ -35,7 +25,7 @@ class Program
             }
 
             // 3. Check for a LOSS condition
-            if (board.IsGameLost())
+            if (!board.Hint().Any())
             {
                 DisplayLossScreen();
                 break; // Exit the game loop
@@ -55,9 +45,6 @@ class Program
         }
     }
 
-    /// <summary>
-    /// Clears the console and draws the current game state.
-    /// </summary>
     private static void DisplayBoard()
     {
         Console.Clear();
@@ -71,14 +58,14 @@ class Program
         for (int i = 0; i < board.Tableau.Count; i++)
         {
             // Show a "*" next to selected cards
-            string selectedMarker = board.SelectedIndices.Contains(i) ? "*" : " ";
+            string selectedMarker = board.SelectedIndices.Contains(i + 1) ? "*" : " ";
             
             // Format: * [0] Ace of Spades
-            Console.WriteLine($"{selectedMarker} [{i}] {board.Tableau[i]}");
+            Console.WriteLine($"{selectedMarker} [{i + 1}] {board.Tableau[i]}");
         }
         
         Console.WriteLine("---------------------------------");
-        Console.WriteLine("Type 0-8 to select/deselect a card.");
+        Console.WriteLine("Type 1-9 to select/deselect a card.");
         Console.WriteLine("Type 'play' to remove selected cards.");
         Console.WriteLine("Type 'hint', 'restart', or 'quit'.");
         
@@ -95,11 +82,9 @@ class Program
         Console.Write("\n> ");
     }
 
-    /// <summary>
+
     /// Handles the user's input and calls the appropriate Board methods.
-    /// </summary>
-    /// <param name="input">The string read from the console.</param>
-    /// <returns>True to continue the game, False to quit.</returns>
+
     private static bool ProcessInput(string input)
     {
         input = input.ToLower().Trim();
@@ -162,9 +147,9 @@ class Program
         }
     }
 
-    /// <summary>
+
     /// Displays the final win message.
-    /// </summary>
+
     private static void DisplayWinScreen()
     {
         DisplayBoard(); // Show the final empty board
@@ -176,9 +161,9 @@ class Program
         Console.ResetColor();
     }
 
-    /// <summary>
+ 
     /// Displays the final loss message.
-    /// </summary>
+
     private static void DisplayLossScreen()
     {
         DisplayBoard(); // Show the final blocked board
