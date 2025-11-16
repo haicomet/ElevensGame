@@ -130,13 +130,16 @@ class Program
                 // Check if the input is a number (a card index)
                 if (int.TryParse(input, out int index))
                 {
-                    if (index < 0 || index >= board.Tableau.Count)
+                    // User sees 1-9, but our list is 0-8.
+                    // We must validate the 1-based input first.
+                    if (index < 1 || index > board.Tableau.Count)
                     {
-                        message = $"Invalid index. Please enter a number from 0 to {board.Tableau.Count - 1}.";
+                        message = $"Invalid index. Please enter a number from 1 to {board.Tableau.Count}.";
                     }
                     else
                     {
-                        board.Select(index); // Select or deselect the card
+                        // Convert the user's 1-based index to our 0-based index
+                        board.Select(index - 1); 
                     }
                 }
                 else
